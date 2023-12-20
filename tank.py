@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import keyboard
 
 # Define GPIO pins and other constants
+print("test")
 Motor_A_EN = 4
 Motor_B_EN = 17
 Motor_A_Pin1 = 26
