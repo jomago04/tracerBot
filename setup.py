@@ -1,8 +1,3 @@
-#!/usr/bin/python3
-# File name   : setup.py
-# Author      : Adeept
-# Date        : 2020/3/14
-
 import os
 import time
 
@@ -21,8 +16,8 @@ def replace_num(file,initial,new_num):
         f.writelines(newline)
 
 for x in range(1,4):
-	if os.system("sudo apt-get update") == 0:
-		break
+    if os.system("sudo apt-get update") == 0:
+        break
 
 os.system("sudo apt-get purge -y wolfram-engine")
 os.system("sudo apt-get purge -y libreoffice*")
@@ -30,106 +25,99 @@ os.system("sudo apt-get -y clean")
 os.system("sudo apt-get -y autoremove")
 
 # for x in range(1,4):
-# 	if os.system("sudo apt-get -y upgrade") == 0:
-# 		break
+#     if os.system("sudo apt-get -y upgrade") == 0:
+#         break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install -U pip") == 0:
-		break
+    if os.system("sudo pip3 install -U pip") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo apt-get install -y python-dev python-pip libfreetype6-dev libjpeg-dev build-essential") == 0:
-		break
+    if os.system("sudo apt-get install -y python-dev python-pip libfreetype6-dev libjpeg-dev build-essential") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo -H pip3 install --upgrade luma.oled") == 0:
-		break
+    if os.system("sudo -H pip3 install --upgrade luma.oled") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo apt-get install -y i2c-tools") == 0:
-		break
+    if os.system("sudo apt-get install -y i2c-tools") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install adafruit-circuitpython-motor") == 0:
-		break
+    if os.system("sudo pip3 install adafruit-circuitpython-motor") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install adafruit-circuitpython-pca9685") == 0:
-		break
-
-# 
-
+    if os.system("sudo pip3 install adafruit-circuitpython-pca9685") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install rpi_ws281x") == 0:
-		break
+    if os.system("sudo pip3 install rpi_ws281x") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo apt-get install -y python3-smbus") == 0:
-		break
+    if os.system("sudo apt-get install -y python3-smbus") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install mpu6050-raspberrypi") == 0:
-		break
+    if os.system("sudo pip3 install mpu6050-raspberrypi") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install flask") == 0:
-		break
+    if os.system("sudo pip3 install flask") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install flask") == 0:
-		break
+    if os.system("sudo pip3 install flask_cors") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install flask_cors") == 0:
-		break
+    if os.system("sudo pip3 install websockets") == 0:
+        break
+
+# Added dependencies from other programs
+for x in range(1,4):
+    if os.system("sudo pip3 install RPi.GPIO") == 0:  # Explicitly install RPi.GPIO
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install websockets") == 0:
-		break
+    if os.system("sudo pip3 install keyboard") == 0:  # Install keyboard library
+        break
+
+# Add here the installation command for the DRV8825 library if it's external.
 
 try:
-	replace_num("/boot/config.txt",'#dtparam=i2c_arm=on','dtparam=i2c_arm=on\nstart_x=1\n')
+    replace_num("/boot/config.txt",'#dtparam=i2c_arm=on','dtparam=i2c_arm=on\nstart_x=1\n')
 except:
-	print('try again')
-
-
-for x in range(1,4):
-	if os.system("sudo pip3 install numpy") == 0:
-		break
-
+    print('try again')
 
 for x in range(1,4):
-	if os.system("sudo apt-get -y install libqtgui4 libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev libqt4-test") == 0:
-		break
+    if os.system("sudo pip3 install numpy") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo pip3 install imutils zmq pybase64 psutil") == 0:   ####
-		break
+    if os.system("sudo apt-get -y install libqtgui4 libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev libqt4-test") == 0:
+        break
 
 for x in range(1,4):
-	if os.system("sudo git clone https://github.com/oblique/create_ap") == 0:
-		break
+    if os.system("sudo pip3 install imutils zmq pybase64 psutil") == 0:
+        break
+
+for x in range(1,4):
+    if os.system("sudo git clone https://github.com/oblique/create_ap") == 0:
+        break
 
 try:
-	os.system("cd " + thisPath + "/create_ap && sudo make install")
+    os.system("cd " + thisPath + "/create_ap && sudo make install")
 except:
-	pass
+    pass
 
 try:
-	os.system("cd //home/pi/create_ap && sudo make install")
+    os.system("cd //home/pi/create_ap && sudo make install")
 except:
-	pass
+    pass
 
 for x in range(1,4):
-	if os.system("sudo apt-get install -y util-linux procps hostapd iproute2 iw haveged dnsmasq") == 0:
-		break
+    if os.system("sudo apt-get install -y
 
-try: #fix conflict with onboard Raspberry Pi audio
-	os.system('sudo touch /etc/modprobe.d/snd-blacklist.conf')
-	with open("/etc/modprobe.d/snd-blacklist.conf",'w') as file_to_write:
-		file_to_write.write("blacklist snd_bcm2835")
-except:
-	pass
-
-print('The program in Raspberry Pi has been installed, disconnected and restarted.')
