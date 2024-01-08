@@ -14,7 +14,8 @@ def control_motor(motor, direction, steps, delay):
 
 def main(stdscr):
     # Clear screen
-   
+    stdscr.clear()
+    stdscr.nodelay(True)
 
     try:       
         while True:
@@ -22,13 +23,13 @@ def main(stdscr):
             key = stdscr.getch()
 
             if key == ord('s'):
-                control_motor(Motor2, 'forward', 1000, 0.000005)
+                control_motor(Motor2, 'forward', 10, 0.005)
             elif key == ord('w'):
-                control_motor(Motor2, 'backward', 1000, 0.000005)
+                control_motor(Motor2, 'backward', 10, 0.005)
             elif key == ord('d'):
-                control_motor(Motor1, 'backward', 100, 0.000005)
+                control_motor(Motor1, 'backward', 10, 0.005)
             elif key == ord('a'):
-                control_motor(Motor1, 'forward', 10000, 0.000005)
+                control_motor(Motor1, 'forward', 10, 0.005)
             else:
                 Motor1.Stop()
                 Motor2.Stop()
@@ -42,3 +43,5 @@ def main(stdscr):
 
 if __name__ == "__main__":
     curses.wrapper(main)
+
+x
