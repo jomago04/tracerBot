@@ -7,3 +7,5 @@ kit.motor1.throttle = 1.0
 time.sleep(0.2)
 
 kit.motor1.throttle = 0
+
+print(test)
