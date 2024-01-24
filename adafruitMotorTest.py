@@ -8,4 +8,4 @@ time.sleep(0.2)
 
 kit.motor1.throttle = 0
 
-print(test)
+print("test")
