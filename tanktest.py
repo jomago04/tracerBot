@@ -20,11 +20,11 @@ def control_dc_motors():
         kit2.motor1.throttle = -1.0
         kit2.motor2.throttle = -1.0
     elif keyboard.is_pressed('a'):
-        kit2.motor1.throttle = -1.0
-        kit2.motor2.throttle = 1.0
-    elif keyboard.is_pressed('d'):
         kit2.motor1.throttle = 1.0
         kit2.motor2.throttle = -1.0
+    elif keyboard.is_pressed('d'):
+        kit2.motor1.throttle = -1.0
+        kit2.motor2.throttle = 1.0
     else:
         kit2.motor1.throttle = 0
         kit2.motor2.throttle = 0
