@@ -2,38 +2,45 @@ import curses
 import time
 from adafruit_motorkit import MotorKit
 from adafruit_motor import stepper
-#nathan was here testing
-# Initialize motor kits
-kit1 = MotorKit(address=0x60)
-kit2 = MotorKit(address=0x61)
+
+#[B Initialize MotorKit for HAT 1 and HAT 2
+kit1 = MotorKit()          # HAT 1 for stepper motors
+kit2 = MotorKit(address=0x61)  # HAT 2 for DC motors
 
 def stop_all_motors():
-    # Function to stop all motors
+    # Stop all DC motors
     kit2.motor1.throttle = 0
     kit2.motor2.throttle = 0
-    # Add code to stop stepper motors if necessary
+    # Release all stepper motors
+    kit1.stepper1.release()
+    kit1.stepper2.release()
 
 def control_dc_motors(key):
-    # Control the DC motors (tank tracks)
-    if key == ord('a'):
+    if key == ord('w'):
+        # Both motors forward
         kit2.motor1.throttle = 1.0
+        kit2.motor2.throttle = 1.0
+    elif key == ord('s'):
+        # Both motors backward
+        kit2.motor1.throttle = -1.0
+        kit2.motor2.throttle = -1.0
+    elif key == ord('a'):
+        # Turn left
+        kit2.motor1.throttle = -1.0
         kit2.motor2.throttle = 1.0
     elif key == ord('d'):
-        kit2.motor1.throttle = -1.0
-        kit2.motor2.throttle = -1.0
-    elif key == ord('w'):
+        # Turn right
         kit2.motor1.throttle = 1.0
         kit2.motor2.throttle = -1.0
-    elif key == ord('s'):
-        kit2.motor1.throttle = -1.0
-        kit2.motor2.throttle = 1.0
-    elif key == ord('e'):
-        # Stop motors if 'e' is pressed
+    elif key == -1:
+        # Stop motors if no key is pressed
         kit2.motor1.throttle = 0
         kit2.motor2.throttle = 0
 
+# ... [Previous code sections remain unchanged] ...
+
 def control_stepper_motors(key, stdscr):
-    # Control the stepper motors (turret)
+    step_length = 10
     if key == ord('i'):
         kit1.stepper1.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
         stdscr.addstr(1, 0, "Stepper Motor 1: Forward")
@@ -46,10 +53,9 @@ def control_stepper_motors(key, stdscr):
     elif key == ord('l'):
         kit1.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
         stdscr.addstr(2, 0, "Stepper Motor 2: Backward")
-    elif key == ord('e'):
-        # Add code to stop stepper motors if necessary when 'e' is pressed
-        pass  # Replace this with actual code to stop the stepper motors if needed
     time.sleep(0.1)  # Small delay after stepper motor control
+
+# ... [Rest of the script remains unchanged] ...
 
 def main(stdscr):
     # Set up curses environment
@@ -64,12 +70,12 @@ def main(stdscr):
             stdscr.clear()
 
             # Control DC motors
-            if key in [ord('w'), ord('s'), ord('a'), ord('d'), ord('e')]:
+            if key in [ord('w'), ord('s'), ord('a'), ord('d')]:
                 control_dc_motors(key)
                 stdscr.addstr(0, 0, f"DC Motor Key Pressed: {chr(key)}")
 
             # Control stepper motors
-            elif key in [ord('i'), ord('k'), ord('j'), ord('l'), ord('e')]:
+            elif key in [ord('i'), ord('k'), ord('j'), ord('l')]:
                 control_stepper_motors(key, stdscr)
 
             # Exit
@@ -80,7 +86,6 @@ def main(stdscr):
     except KeyboardInterrupt:
         pass
     finally:
-        stop_all_motors()  # Ensure motors are stopped when the program exits
+        stop_all_motors()  # Ensure motors are stopped when program exits
 
-if __name__ == '__main__':
-    curses.wrapper(main)
+curses.wrapper(main)
