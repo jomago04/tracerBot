@@ -2,56 +2,58 @@ import curses
 import time
 from adafruit_motorkit import MotorKit
 from adafruit_motor import stepper
-
+#nathan was here testing
 kit1 = MotorKit(address=0x60)
 kit2 = MotorKit(address=0x61)
 
 def stop_all_motors():
     kit2.motor1.throttle = 0
     kit2.motor2.throttle = 0
+    kit1.stepper1.release()
+    kit1.stepper2.release()
 
 def control_dc_motors(key):
-    if key == ord('w'):
+    # wheel movement control
+    if key == ord('a'):
         kit2.motor1.throttle = 1.0
         kit2.motor2.throttle = 1.0
-    elif key == ord('s'):
+    elif key == ord('d'):
         kit2.motor1.throttle = -1.0
         kit2.motor2.throttle = -1.0
-    elif key == ord('a'):
+    elif key == ord('w'):
         kit2.motor1.throttle = 1.0
         kit2.motor2.throttle = -1.0
-    elif key == ord('d'):
+    elif key == ord('s'):
         kit2.motor1.throttle = -1.0
         kit2.motor2.throttle = 1.0
     elif key == ord('e'):
-        # Stop motors if 'e' is pressed
+        # stop motors if 'e' is pressed
         kit2.motor1.throttle = 0
         kit2.motor2.throttle = 0
 
 def control_stepper_motors(key, stdscr):
-    steps = 20
+    # turret motor control
     if key == ord('i'):
-        for _ in range(steps):
-            kit1.stepper1.onestep(direction=stepper.FORWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(1, 0, "Pitch: Up")
+        kit1.stepper1.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
+        stdscr.addstr(1, 0, "Stepper Motor 1: Forward")
     elif key == ord('k'):
-        for _ in range(steps):
-            kit1.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(1, 0, "Pitch: Down")
+        kit1.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
+        stdscr.addstr(1, 0, "Stepper Motor 1: Backward")
     elif key == ord('j'):
-        for _ in range(steps):
-            kit1.stepper2.onestep(direction=stepper.FORWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(2, 0, "YAW: Left")
+        kit1.stepper2.onestep(direction=stepper.FORWARD, style=stepper.DOUBLE)
+        stdscr.addstr(2, 0, "Stepper Motor 2: Forward")
     elif key == ord('l'):
-        for _ in range(steps):
-            kit1.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(2, 0, "YAW: Right")
-        
+        kit1.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
+        stdscr.addstr(2, 0, "Stepper Motor 2: Backward")
+    elif key == ord('e'):
+        pass
+    time.sleep(0.001) 
+
 def main(stdscr):
     curses.cbreak()
     stdscr.keypad(True)
     stdscr.nodelay(True)
-    stdscr.timeout(100)
+    stdscr.timeout(100)   
 
     try:
         while True:
@@ -67,7 +69,6 @@ def main(stdscr):
             elif key in [ord('i'), ord('k'), ord('j'), ord('l'), ord('e')]:
                 control_stepper_motors(key, stdscr)
 
-            # Exit
             elif key == ord('q'):
                 break
 
@@ -75,7 +76,7 @@ def main(stdscr):
     except KeyboardInterrupt:
         pass
     finally:
-        stop_all_motors()  # Ensure motors are stopped when the program exits
+        stop_all_motors()
 
 if __name__ == '__main__':
     curses.wrapper(main)

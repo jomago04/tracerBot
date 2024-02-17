@@ -24,9 +24,6 @@ os.system("sudo apt-get purge -y libreoffice*")
 os.system("sudo apt-get -y clean")
 os.system("sudo apt-get -y autoremove")
 
-# for x in range(1,4):
-#     if os.system("sudo apt-get -y upgrade") == 0:
-#         break
 
 for x in range(1,4):
     if os.system("sudo pip3 install -U pip") == 0:
@@ -76,16 +73,13 @@ for x in range(1,4):
     if os.system("sudo pip3 install websockets") == 0:
         break
 
-# Added dependencies from other programs
 for x in range(1,4):
-    if os.system("sudo pip3 install RPi.GPIO") == 0:  # Explicitly install RPi.GPIO
+    if os.system("sudo pip3 install RPi.GPIO") == 0:  
         break
 
 for x in range(1,4):
-    if os.system("sudo pip3 install keyboard") == 0:  # Install keyboard library
+    if os.system("sudo pip3 install keyboard") == 0:
         break
-
-# Add here the installation command for the DRV8825 library if it's external.
 
 try:
     replace_num("/boot/config.txt",'#dtparam=i2c_arm=on','dtparam=i2c_arm=on\nstart_x=1\n')

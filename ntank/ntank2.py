@@ -3,24 +3,30 @@ import time
 from adafruit_motorkit import MotorKit
 from adafruit_motor import stepper
 
+# Initialize motor kits
 kit1 = MotorKit(address=0x60)
 kit2 = MotorKit(address=0x61)
 
 def stop_all_motors():
+    # Function to stop all motors
     kit2.motor1.throttle = 0
     kit2.motor2.throttle = 0
+    # Disabling stepper motors by releasing them
+    kit1.stepper1.release()
+    kit1.stepper2.release()
 
 def control_dc_motors(key):
-    if key == ord('w'):
+    # Control the DC motors (tank tracks)
+    if key == ord('a'):
         kit2.motor1.throttle = 1.0
         kit2.motor2.throttle = 1.0
-    elif key == ord('s'):
+    elif key == ord('d'):
         kit2.motor1.throttle = -1.0
         kit2.motor2.throttle = -1.0
-    elif key == ord('a'):
+    elif key == ord('w'):
         kit2.motor1.throttle = 1.0
         kit2.motor2.throttle = -1.0
-    elif key == ord('d'):
+    elif key == ord('s'):
         kit2.motor1.throttle = -1.0
         kit2.motor2.throttle = 1.0
     elif key == ord('e'):
@@ -29,29 +35,36 @@ def control_dc_motors(key):
         kit2.motor2.throttle = 0
 
 def control_stepper_motors(key, stdscr):
-    steps = 20
+    # Control the stepper motors (turret) with faster stepping
     if key == ord('i'):
-        for _ in range(steps):
-            kit1.stepper1.onestep(direction=stepper.FORWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(1, 0, "Pitch: Up")
+        for _ in range(100):  # Increase steps per call for faster movement
+            kit1.stepper1.onestep(direction=stepper.FORWARD, style=stepper.INTERLEAVE)
+        time.sleep(0.01)
+        stdscr.addstr(1, 0, "Stepper Motor 1: Forward Fast")
     elif key == ord('k'):
-        for _ in range(steps):
-            kit1.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(1, 0, "Pitch: Down")
+        for _ in range(5):  # Increase steps per call for faster movement
+            kit1.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.INTERLEAVE)
+        stdscr.addstr(1, 0, "Stepper Motor 1: Backward Fast")
     elif key == ord('j'):
-        for _ in range(steps):
-            kit1.stepper2.onestep(direction=stepper.FORWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(2, 0, "YAW: Left")
+        for _ in range(5):  # Increase steps per call for faster movement
+            kit1.stepper2.onestep(direction=stepper.FORWARD, style=stepper.INTERLEAVE)
+        stdscr.addstr(2, 0, "Stepper Motor 2: Forward Fast")
     elif key == ord('l'):
-        for _ in range(steps):
-            kit1.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.MICROSTEP)
-        stdscr.addstr(2, 0, "YAW: Right")
-        
+        for _ in range(5):  # Increase steps per call for faster movement
+            kit1.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.INTERLEAVE)
+        stdscr.addstr(2, 0, "Stepper Motor 2: Backward Fast")
+    elif key == ord('e'):
+        # Stop stepper motors if 'e' is pressed
+        kit1.stepper1.release()
+        kit1.stepper2.release()
+    time.sleep(0.05)  # Reduced delay for faster response
+
 def main(stdscr):
+    # Set up curses environment
     curses.cbreak()
     stdscr.keypad(True)
     stdscr.nodelay(True)
-    stdscr.timeout(100)
+    stdscr.timeout(100)    # Timeout in milliseconds
 
     try:
         while True:
@@ -67,7 +80,7 @@ def main(stdscr):
             elif key in [ord('i'), ord('k'), ord('j'), ord('l'), ord('e')]:
                 control_stepper_motors(key, stdscr)
 
-            # Exit
+            # Exit and stop motors
             elif key == ord('q'):
                 break
 

@@ -41,7 +41,6 @@ def control_stepper_motors():
     time.sleep(0.1) 
 
 def main():
-    keyboard.block_key(keyboard.all_modifiers | keyboard.all_keys)
     try:
         while True:
             control_dc_motors()

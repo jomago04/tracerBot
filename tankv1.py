@@ -24,7 +24,6 @@ def control_dc_motors(key):
         kit2.motor1.throttle = -1.0
         kit2.motor2.throttle = 1.0
     elif key == ord('e'):
-        # Stop motors if 'e' is pressed
         kit2.motor1.throttle = 0
         kit2.motor2.throttle = 0
 
@@ -46,28 +45,25 @@ def control_stepper_motors(key, stdscr):
         for _ in range(steps):
             kit1.stepper2.onestep(direction=stepper.BACKWARD, style=stepper.MICROSTEP)
         stdscr.addstr(2, 0, "YAW: Right")
-        
+
 def main(stdscr):
     curses.cbreak()
     stdscr.keypad(True)
     stdscr.nodelay(True)
-    stdscr.timeout(100)
+    stdscr.timeout(100)   
 
     try:
         while True:
             key = stdscr.getch()
             stdscr.clear()
 
-            # Control DC motors
             if key in [ord('w'), ord('s'), ord('a'), ord('d'), ord('e')]:
                 control_dc_motors(key)
                 stdscr.addstr(0, 0, f"DC Motor Key Pressed: {chr(key)}")
 
-            # Control stepper motors
             elif key in [ord('i'), ord('k'), ord('j'), ord('l'), ord('e')]:
                 control_stepper_motors(key, stdscr)
 
-            # Exit
             elif key == ord('q'):
                 break
 
@@ -75,7 +71,7 @@ def main(stdscr):
     except KeyboardInterrupt:
         pass
     finally:
-        stop_all_motors()  # Ensure motors are stopped when the program exits
+        stop_all_motors()  
 
 if __name__ == '__main__':
     curses.wrapper(main)
